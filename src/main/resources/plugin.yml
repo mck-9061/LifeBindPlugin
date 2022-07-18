@@ -1,0 +1,12 @@
+name: LifeBindPlugin
+version: 1.0
+author: MCK
+api-version: 1.13
+main: me.mck.LifeBind.Main
+commands:
+  addbind:
+    description: Creates a life bind between multiple players
+    usage: /addbind [player1] [player2] [player3] ...
+  checkkarma:
+    description: Check your current karma level
+    usage: /checkkarma
