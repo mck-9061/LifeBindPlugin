@@ -4,6 +4,7 @@ import me.mck.LifeBind.commands.CheckKarma;
 import me.mck.LifeBind.commands.CreateBind;
 import me.mck.LifeBind.events.DamageListener;
 import me.mck.LifeBind.events.DeathListener;
+import me.mck.LifeBind.events.HealListener;
 import me.mck.LifeBind.events.JoinListener;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -63,6 +64,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new DamageListener(), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new DeathListener(), this);
+        getServer().getPluginManager().registerEvents(new HealListener(), this);
 
         System.out.println(bindings.size());
     }

@@ -24,11 +24,16 @@ public class JoinListener implements Listener {
             Main.ignoredDamage.add(player);
 
 
-            player.damage(damage);
+            if (damage > 0) {
+                player.damage(damage);
+                player.sendMessage("While you were offline, your damage-binded partner(s) took " + damage/2 + " hearts of damage!");
+            } else if (damage < 0) {
+                player.setHealth(player.getHealth() - damage);
+                player.sendMessage("While you were offline, your damage-binded partner(s) healed " + damage/2 + " hearts!");
+            }
+
+
             Main.ignoredDamage.remove(player);
-            player.sendMessage("While you were offline, your damage-binded partner(s) took " + damage/2 + " hearts of damage!");
-
-
             config.set(player.getName(), 0);
             config.save(Main.instance.getCustomConfigFile());
         }
