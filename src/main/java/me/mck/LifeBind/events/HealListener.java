@@ -43,7 +43,13 @@ public class HealListener implements Listener {
 
                 if (player.isOnline()) {
                     Main.ignoredDamage.add(player.getPlayer());
-                    player.getPlayer().setHealth(player.getPlayer().getHealth() + event.getAmount());
+
+                    double newHealth = player.getPlayer().getHealth() + event.getAmount();
+                    if (newHealth > 20) newHealth = 20;
+
+
+
+                    player.getPlayer().setHealth(newHealth);
                     Main.ignoredDamage.remove(player.getPlayer());
                     System.out.print("Healed!");
                 } else {

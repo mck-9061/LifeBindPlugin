@@ -18,18 +18,27 @@ public class JoinListener implements Listener {
 
         Main.instance.manager.addPlayer(player);
 
+        System.out.println("Player joined!");
+
         if (config.contains(player.getName())) {
             double damage = config.getDouble(player.getName());
             player.setNoDamageTicks(0);
             Main.ignoredDamage.add(player);
 
+            System.out.println("Player is in config");
+
 
             if (damage > 0) {
                 player.damage(damage);
                 player.sendMessage("While you were offline, your damage-binded partner(s) took " + damage/2 + " hearts of damage!");
+                System.out.println("Player damaged");
             } else if (damage < 0) {
-                player.setHealth(player.getHealth() - damage);
-                player.sendMessage("While you were offline, your damage-binded partner(s) healed " + damage/2 + " hearts!");
+                double newHealth = player.getHealth() - damage;
+                if (newHealth > 20) newHealth = 20;
+
+                player.setHealth(newHealth);
+                player.sendMessage("While you were offline, your damage-binded partner(s) healed " + damage/-2 + " hearts!");
+                System.out.println("Player healed");
             }
 
 
