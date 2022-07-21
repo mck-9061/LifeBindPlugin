@@ -2,10 +2,7 @@ package me.mck.LifeBind;
 
 import me.mck.LifeBind.commands.CheckKarma;
 import me.mck.LifeBind.commands.CreateBind;
-import me.mck.LifeBind.events.DamageListener;
-import me.mck.LifeBind.events.DeathListener;
-import me.mck.LifeBind.events.HealListener;
-import me.mck.LifeBind.events.JoinListener;
+import me.mck.LifeBind.events.*;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,7 +20,7 @@ import java.util.List;
 
 public class Main extends JavaPlugin {
     public static Main instance;
-    public static List<List<OfflinePlayer>> bindings;
+    public static List<List<String>> bindings;
     public static List<Player> ignoredDamage;
     public static List<Player> justKarmad;
 
@@ -49,11 +46,11 @@ public class Main extends JavaPlugin {
         manager = new KarmaManager(karmaConfig, karma);
 
         FileConfiguration config = getConfig();
-        bindings = (List<List<OfflinePlayer>>) config.getList("bindings");
+        bindings = (List<List<String>>) config.getList("bindings");
 
-        for (List<OfflinePlayer> list : bindings) {
-            for (OfflinePlayer player:list) {
-                System.out.println(player.getName());
+        for (List<String> list : bindings) {
+            for (String player:list) {
+                System.out.println(player);
             }
         }
 

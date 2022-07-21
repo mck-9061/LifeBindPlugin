@@ -21,6 +21,12 @@ public class JoinListener implements Listener {
         System.out.println("Player joined!");
 
         if (config.contains(player.getName())) {
+            if (player.isDead()) {
+                System.out.println("Player is dead, aborting!");
+                return;
+            }
+
+
             double damage = config.getDouble(player.getName());
             player.setNoDamageTicks(0);
             Main.ignoredDamage.add(player);

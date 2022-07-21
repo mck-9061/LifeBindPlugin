@@ -25,23 +25,30 @@ public class HealListener implements Listener {
         Main.instance.manager.addKarma(healed, -1*(int) Math.ceil(event.getAmount()));
 
 
-        for (List<OfflinePlayer> list : Main.bindings) {
-            if (!list.contains(Bukkit.getOfflinePlayer(healed.getUniqueId()))) {
+        for (List<String> list : Main.bindings) {
+            if (!list.contains(healed.getName())) {
                 System.out.println("List does not contain healed player!");
                 continue;
             }
             System.out.println("List contains healed player!");
 
 
-            for (OfflinePlayer player : list) {
-                if (player.getName().equals(healed.getName())) {
+            for (String playerName : list) {
+                if (playerName.equals(healed.getName())) {
                     System.out.println("Skipping identical player...");
                     continue;
                 }
 
+                OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
 
 
                 if (player.isOnline()) {
+                    if (player.getPlayer().isDead()) {
+                        System.out.println("Player is dead, aborting!");
+                        continue;
+                    }
+
+
                     Main.ignoredDamage.add(player.getPlayer());
 
                     double newHealth = player.getPlayer().getHealth() + event.getAmount();
@@ -56,12 +63,12 @@ public class HealListener implements Listener {
                     FileConfiguration config = Main.instance.getCustomConfig();
                     double currentValue = 0;
 
-                    if (config.contains(player.getName())) {
-                        currentValue = config.getDouble(player.getName());
+                    if (config.contains(playerName)) {
+                        currentValue = config.getDouble(playerName);
                     }
 
                     currentValue -= event.getAmount();
-                    config.set(player.getName(), currentValue);
+                    config.set(playerName, currentValue);
                     config.save(Main.instance.getCustomConfigFile());
                     System.out.println("Queued health!");
 

@@ -22,8 +22,6 @@ public class DamageListener implements Listener {
 
         System.out.println("Event thrown");
 
-        Main.instance.manager.addKarma(damaged, (int) Math.ceil(event.getDamage()));
-
 
         if (Main.instance.manager.checkKarma(damaged)) {
             damaged.sendMessage("Your karma has caught up with you! Dealing double damage to you!");
@@ -44,24 +42,34 @@ public class DamageListener implements Listener {
             return;
         }
 
+        Main.instance.manager.addKarma(damaged, (int) Math.ceil(event.getDamage()));
 
-        for (List<OfflinePlayer> list : Main.bindings) {
-            if (!list.contains(Bukkit.getOfflinePlayer(damaged.getUniqueId()))) {
+
+        for (List<String> list : Main.bindings) {
+            if (!list.contains(damaged.getName())) {
                 System.out.println("List does not contain damaged player!");
                 continue;
             }
             System.out.println("List contains damaged player!");
 
 
-            for (OfflinePlayer player : list) {
-                if (player.getName().equals(damaged.getName())) {
+            for (String playerName : list) {
+                if (playerName.equals(damaged.getName())) {
                     System.out.println("Skipping identical player...");
                     continue;
                 }
 
+                OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+
 
 
                 if (player.isOnline()) {
+                    if (player.getPlayer().isDead()) {
+                        System.out.println("Player is dead, aborting!");
+                        continue;
+                    }
+
+
                     Main.ignoredDamage.add(player.getPlayer());
                     player.getPlayer().damage(event.getDamage());
                     Main.ignoredDamage.remove(player.getPlayer());
@@ -70,12 +78,12 @@ public class DamageListener implements Listener {
                     FileConfiguration config = Main.instance.getCustomConfig();
                     double currentValue = 0;
 
-                    if (config.contains(player.getName())) {
-                        currentValue = config.getDouble(player.getName());
+                    if (config.contains(playerName)) {
+                        currentValue = config.getDouble(playerName);
                     }
 
                     currentValue += event.getDamage();
-                    config.set(player.getName(), currentValue);
+                    config.set(playerName, currentValue);
                     config.save(Main.instance.getCustomConfigFile());
                     System.out.println("Queued damage!");
 

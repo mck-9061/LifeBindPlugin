@@ -17,12 +17,11 @@ public class CreateBind implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         if (commandSender.hasPermission("*")) {
-            List<OfflinePlayer> boundPlayers = new ArrayList<>();
+            List<String> boundPlayers = new ArrayList<>();
 
             for (String player : args) {
                 try {
-                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(Bukkit.getPlayer(player).getUniqueId());
-                    boundPlayers.add(offlinePlayer);
+                    boundPlayers.add(player);
 
                 } catch (Exception e) {
                     commandSender.sendMessage("Player not recognised!");
@@ -32,7 +31,7 @@ public class CreateBind implements CommandExecutor {
             }
 
 
-            List<List<OfflinePlayer>> bindings = (List<List<OfflinePlayer>>) Main.instance.getConfig().getList("bindings");
+            List<List<String>> bindings = (List<List<String>>) Main.instance.getConfig().getList("bindings");
 
             bindings.add(boundPlayers);
 
